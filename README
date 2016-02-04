@@ -8,18 +8,18 @@ This sourcecode is licenced under GPL-3
 
 
 Preparation of the core scripts for LibraryBox on RapsberryPI and OpenWRT.
-The Scripts are designed for reusing and modificate only the base Piratebox Scripts instead of being a HARD fork from PBx.
+The Scripts are designed for reuse and modify only the base Piratebox Scripts instead of being a HARD fork from PBx.
 
-To achieve this, LibraryBox uses the hook implementation (preprepared empty scripts for you own code) and exchanges a few files, if needed.
+To achieve this, LibraryBox uses the hook implementation (pre-prepared empty scripts for your own code) and changes a few files, if needed.
 
 
 The workflow for creating the final source package is:
 
   - clone this project
   - do your modification in the "customization" folder
-  - run the following command, which results the final "compilation" of all scripts into the directory "build" (changes made during build, see below)
+  - run the following command, which results in the final "compilation" of all scripts into the directory "build" (changes made during build, see below)
     make build
-  - To create an script package
+  - To create a script package
      # OpenWRT imagefile:  make image
      # Script package   :  make targz
      # all together     :  make all
@@ -37,19 +37,19 @@ Folders
   					Contains internet detection
 					Shoutbox Scripts
 					(...) see below
-  customization/www_content     ==> is moved to opt/piratebox/share/Content
+  customization/www_content     ==> is moved to /opt/piratebox/share/Content
   					Located on USB Stick
-					Contains all the presentational stuff
+					Contains all the presentation stuff
 					Contains presentation Templates for Statistic-Views
 
   customization/www_content/dir-images ==> Icons displayed on directory listing; file-Types
   						icons by famfamfam
 
-  piratebox_origin =  git subtree of PirateBoxScripts_Webserver branch "librarybox_dev"  (see git subtree"
-                      Normally you would choose some stable release, but because of LibraryBox is leapfrogging PirateBox I need to base on special branch to able to push changes back and other way around. This can be later changed to "stable" branch
+  piratebox_origin =  git subtree of PirateBoxScripts_Webserver branch "librarybox_dev"  (see git subtree)
+                      Normally you would choose some stable release, but because of LibraryBox is leapfrogging PirateBox I need to base on special branch to be able to push changes back and also the other way around. This can be later changed to "stable" branch
   tmp_img	   =  Customization for images and mount points
   build_dir	   =  Folder for including piratebox + LibraryBox stuff to a complete cake
-  LibraryBox-landingpage = git subtree of LibraryBox-landingpage branch master , contains the content of www_customization and others
+  LibraryBox-landingpage = git subtree of LibraryBox-landingpage branch master, contains the content of www_customization and others
 
 Changes during build
 --------------------
@@ -87,7 +87,7 @@ dir-generator.php	=> 	KittyKat dir Listing with customization for counting downl
   ---------------
     vc.conf.php			=>	Configuration file for Visitor counter
     vc.func.php			=>	Function Pool for visitor counter
-    vc_counter.php		=>	Displays a transparent 1x1 gif and counts visitor
+    vc_counter.php		=>	Displays a transparent 1x1 gif and counts visitors
     vc_display.php		=>	Simple view into statistics
     						http://librarybox.us/vc_display.php
 
