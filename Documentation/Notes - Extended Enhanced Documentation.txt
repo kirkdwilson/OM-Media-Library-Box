@@ -1,0 +1,70 @@
+a file in \auto_flash with a .bin extension will be flashed on the boot.  After the flash the file will be changed to *.bin.X where X represents the a number from 1...onward depending on how many files are in the directory.  Then a reboot will occur
+After an auto_flash the password will have been reset and it will be necessary to put a new set of passwords in.  Also, after the flash the install of the LB code will have been undone.  This means that you will have to change the \install\auto_package_done to \install\auto_package for it to work through re-installation
+The re-install of LB code after the auto_flash could be scripted in the run-on-boot.sh
+
+During LB install lights will be:
+	WiFi LED which will blink on/off. - Start of extendRoot init
+	WiFi LED solid - End of extendRoot init
+	USB LED which will blink on/off - Start of LB package installation
+	USB LED solid - End of LB package installation
+	
+A single blinking USB LED (without Solid WiFi LED) indicates - Box Installer Failure ------  after a failed LB install
+
+
+
+syslog_recv.py is a simple script for a client computer, collecting installation log iinformation.  The client has to be connected via a wired and fixed IP of 192.168.1.2:9999
+
+USB Stick /install		Contains:
+	/auto_package		One or more lined files with the packages needed to be installed.  This file is renamed after installation to auto_package_done to keep it from re-installing
+	/OpenWRT.img.gz		(prepared ext3-image file
+	/<packageimg>		Stuff that is needed by Library Box install  file: 'librarybox_Rev.Sub_img.tar.gz'
+	/cache				Folder containing all needed .ipk files
+	/Package.gz_main	Package-List from public repository
+	/Package.gz_piratebox	(Optional) Package-List from PirateBox repository
+	
+USB Stick /auto_flash	(Optional) Contains:
+	<image>.bin			An image in this folder which is flashed with sysupgrade during bootup.  Sysupgrade makes some firmware compatibility checks before reflashing
+						After flashing or if there are incompatibilities the file gets renamed 
+
+USB Stick /stop.txt		(Optional) if this file is present the auto_package file won't be processed during boot
+
+USB Stick /auto_flash	(Optional) Contains:
+						.bin files that will be flashed automatically during the next boot.  If it fits to the device.  This will happen before auto_package is processed.
+						Flashed images will be renamed and flashed from the ram (not directly from USB)
+						
+USB Stick /run-on-boot.sh (Optional)
+	look for an install_h5ai.sh and execute it if found.  After execution it will rename install_h5ai.sh to install_h5ai.sh.done
+		Requires having h5ai_installer.tar also present
+	look for file /Content_Update/install.txt and if found will copy all files/directories in USB Stick /Content_Update to the USB Stick /LibraryBox/Contnet directory then rename the
+		/Content_Update/install.txt  to /Content_Update/done.txt
+	After completion of any action it will reboot the unit
+
+
+Boot sequence process:
+0. Boot the firmware image on the unit & mount the USB drive if it is present
+
+1. Check if the architecture is supported by auto flash tool and a image file is available.
+1.1. If yes, try to identify the model.
+1.2. If image foud, rename the image file with an incremented number (of existing files. That it won't be
+redetected again.
+1.3. Create a copy into /tmp and execute sysupgrade on it. (and do a reboot)
+
+2. If stop.txt exists, stop here. (create a log entry)
+
+3. If extendRoot filesystem wasn't enabled,
+3.1. start logging
+3.2. Run box_installer script for extendRoot initialization.
+3.3. Copy over logfile
+
+4. If auto_package install file is there
+4.1. run automatic package install
+4.2. move installed packages out of auto_package to auto_package_done
+4.3. if that was the last line, remove auto_package file
+4.4. trigger a reboot
+
+Special files:
+files/bin/box_installer.sh		- Script doing the work, loggs to sTDOUT and STDERR
+files/bin/box_installer_start.sh- Script launching syslog daemon and rerouts installer output to syslog-daemon
+files/bin/box_init_setup.sh		- Script for a simple user menu setting time, root password, FTP password & DNLA options
+
+
