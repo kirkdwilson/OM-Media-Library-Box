@@ -8,6 +8,10 @@ During LB install lights will be:
 	USB LED which will blink on/off - Start of LB package installation
 	USB LED solid - End of LB package installation
 	
+During run-on-boot.sh script
+	WiFi, USB, LAN LED will blink on/off. - run-on-boot file update/install activity
+	Reboot will occur if needed by the run-on-boot script
+	
 A single blinking USB LED (without Solid WiFi LED) indicates - Box Installer Failure ------  after a failed LB install
 
 
