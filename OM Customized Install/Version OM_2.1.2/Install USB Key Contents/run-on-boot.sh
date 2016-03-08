@@ -54,6 +54,13 @@ if [ -f /mnt/usb/Brand_Update/install.txt ]; then
 	NEEDREBOOT=1
 fi
 
+# Install Config Update if it exsists
+if [ -f /mnt/usb/Config_Update/install.txt ]; then
+	cp -rf /mnt/usb/Config_Update/* /mnt/usb/LibraryBox/Config/
+	rm /mnt/usb/LibraryBox/Config/install.txt
+	mv /mnt/usb/Config_Update/install.txt /mnt/usb/Config_Update/install.txt.done
+	NEEDREBOOT=1
+fi
 
 #Switch 3G/LAN -light online, that Run-On-Boot is Finished
 	_signaling_stop  "$LED_PACKAGE_1"
