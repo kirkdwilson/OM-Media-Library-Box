@@ -13,6 +13,7 @@ echo "Modifying support files"
 cp -f mime.types /opt/piratebox/conf/lighttpd/
 cp -f lighttpd.conf /opt/piratebox/conf/lighttpd/
 echo "Modifying banner and chat_init.txt"
+cp -f banner_Updated /etc/banner
 cp -f chat_init.txt /opt/piratebox/conf/chat_init.txt
 echo "Select 'A' if prompted to overwrite"
 echo "Installation complete - cleaning up temp files"
