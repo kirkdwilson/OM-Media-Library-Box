@@ -22,7 +22,7 @@ exec 2>&1
 
 echo ""
 echo "##########################################################"
-echo "Run-On-Boot Script: `date`"
+echo "Run-On-Boot Script:"
 cd /mnt/usb
 
 set -x
@@ -30,6 +30,8 @@ set -x
 if [ -e /mnt/usb/install/auto_package ]; then
 	# LibraryBox hasn't configured itself yet
 	# Wait for the next boot
+	echo "LibraryBox hasn't configured itself yet"
+	echo "Will wait for net reboot"
 	exit 0
 fi
 
@@ -64,22 +66,22 @@ if [ -f /mnt/usb/Brand_Update/install.txt ]; then
 fi
 
 # Install Config Update if it exsists
-if [ -f /mnt/usb/Config_Update/install.txt ]; then
+if [ -f /mnt/usb/Config_Update/install.txt && NEEDREBOOT == 0 ]; then
 	echo ""
 	echo "Installing Configuration Update"
 	cp -rf /mnt/usb/Config_Update/* /mnt/usb/LibraryBox/Config/
 	# if the hostename changed then we need to re-create the system_nostename file
 	if [ -f /mnt/usb/Config_Update/hostname.txt ]; then
-	#	cat /mnt/usb/LibraryBox/Config/piratebox_node_name.txt "." /mnt/usb/LibraryBox/Config/hostname.txt > /mnt/usb/LibraryBox/Config/system_hostname.txt
-	echo "Still working on system_hostname.txt"
+        echo "`cat /mnt/usb/LibraryBox/Config/piratebox_node_name.txt | head -n1`.`cat /mnt/usb/LibraryBox/Config/system_hostname.txt | head -n1`"	
+		echo "Updated the System_Hostename.txt file with new hostname"
 	fi
 	if [ -f /mnt/usb/LibraryBox/Config/install.txt ]; then
-		echo "Configuration Update Complete - will Reboot"
+		echo "Configuration Update Complete - will take effect on next power-up"
 		rm /mnt/usb/LibraryBox/Config/install.txt
 		mv /mnt/usb/Config_Update/install.txt /mnt/usb/Config_Update/install.txt.done
-		NEEDREBOOT=1
 	fi
 fi
+
 
 #Switch 3G/LAN -light online, that Run-On-Boot is Finished
 	_signaling_stop  "$LED_PACKAGE_1"

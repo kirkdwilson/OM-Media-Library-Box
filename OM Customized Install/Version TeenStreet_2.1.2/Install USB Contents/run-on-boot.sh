@@ -72,8 +72,8 @@ if [ -f /mnt/usb/Config_Update/install.txt && NEEDREBOOT == 0 ]; then
 	cp -rf /mnt/usb/Config_Update/* /mnt/usb/LibraryBox/Config/
 	# if the hostename changed then we need to re-create the system_nostename file
 	if [ -f /mnt/usb/Config_Update/hostname.txt ]; then
-	#	cat /mnt/usb/LibraryBox/Config/piratebox_node_name.txt "." /mnt/usb/LibraryBox/Config/hostname.txt > /mnt/usb/LibraryBox/Config/system_hostname.txt
-	echo "Still working on system_hostname.txt"
+        echo "`cat /mnt/usb/LibraryBox/Config/piratebox_node_name.txt | head -n1`.`cat /mnt/usb/LibraryBox/Config/system_hostname.txt | head -n1`"	
+		echo "Updated the System_Hostename.txt file with new hostname"
 	fi
 	if [ -f /mnt/usb/LibraryBox/Config/install.txt ]; then
 		echo "Configuration Update Complete - will take effect on next power-up"
