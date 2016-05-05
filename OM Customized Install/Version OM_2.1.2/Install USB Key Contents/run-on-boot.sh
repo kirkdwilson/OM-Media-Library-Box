@@ -42,14 +42,14 @@ fi
 	
 # Install h5ai
 if [ -f /mnt/usb/install_h5ai.sh ]; then
+	echo "Will start H5ai Installation Script"
 	chmod a+x /mnt/usb/install_h5ai.sh
 	sh /mnt/usb/install_h5ai.sh
-if [ -d /opt/piratebox/www/_h5ai ]; then
-	echo "H5ai Installed"
-	mv /mnt/usb/install_h5ai.sh /mnt/usb/install_h5ai.sh.done
-	NEEDREBOOT=1
-fi
-
+	if [ -d /opt/piratebox/www/_h5ai ]; then
+		echo "H5ai Installed"
+		mv /mnt/usb/install_h5ai.sh /mnt/usb/install_h5ai.sh.done
+		NEEDREBOOT=1
+	fi
 fi
 
 # Install Web Brand Update if it exsists
@@ -66,19 +66,22 @@ if [ -f /mnt/usb/Brand_Update/install.txt ]; then
 fi
 
 # Install Config Update if it exsists
-if [ -f /mnt/usb/Config_Update/install.txt && NEEDREBOOT == 0 ]; then
+if [ -f /mnt/usb/Config_Update/install.txt ]; then
 	echo ""
 	echo "Installing Configuration Update"
 	cp -rf /mnt/usb/Config_Update/* /mnt/usb/LibraryBox/Config/
 	# if the hostename changed then we need to re-create the system_nostename file
 	if [ -f /mnt/usb/Config_Update/hostname.txt ]; then
-        echo "`cat /mnt/usb/LibraryBox/Config/piratebox_node_name.txt | head -n1`.`cat /mnt/usb/LibraryBox/Config/system_hostname.txt | head -n1`"	
+		rm /mnt/usb/LibraryBox/Config/system_hostname.txt
+		echo "`cat /mnt/usb/LibraryBox/Config/piratebox_node_name.txt | head -n1`.`cat /mnt/usb/LibraryBox/Config/hostname.txt | head -n1`" >> /mnt/usb/LibraryBox/Config/system_hostname.txt
 		echo "Updated the System_Hostename.txt file with new hostname"
 	fi
 	if [ -f /mnt/usb/LibraryBox/Config/install.txt ]; then
 		echo "Configuration Update Complete - will take effect on next power-up"
 		rm /mnt/usb/LibraryBox/Config/install.txt
 		mv /mnt/usb/Config_Update/install.txt /mnt/usb/Config_Update/install.txt.done
+		poweroff
+		exit 0
 	fi
 fi
 
