@@ -14,6 +14,7 @@ During run-on-boot.sh script
 	
 A single blinking USB LED (without Solid WiFi LED) indicates - Box Installer Failure ------  after a failed LB install
 
+A solid USB LED and Power LED inidcate that the unit is in a safe PowerDown mode.  It should be turned off.
 
 
 syslog_recv.py is a simple script for a client computer, collecting installation log iinformation.  The client has to be connected via a wired and fixed IP of 192.168.1.2:9999
